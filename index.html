@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subject: 401 | System Architect</title>
+    <title>System Architecture | Senior Developer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap"
         rel="stylesheet">
@@ -12,21 +12,38 @@
 
     <style>
         :root {
-            /* Deep Burgundy / White Room Aesthetic */
-            --glass-bg: rgba(10, 5, 5, 0.6);
-            --glass-border: rgba(128, 0, 32, 0.15);
-            --accent: #800020;
-            /* Burgundy */
-            --accent-glow: #ff0040;
+            /* DARK MODE (Original Index 3) */
+            --bg-primary: #050505;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --glass-bg: rgba(10, 10, 10, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent: #6366f1;
+            /* Indigo */
+            --accent-glow: rgba(99, 102, 241, 0.2);
+            --void-gradient: radial-gradient(circle at 10% 10%, #1e1b4b 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, #312e81 0%, transparent 40%);
+        }
+
+        /* LIGHT MODE (From Index 2) */
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(15, 23, 42, 0.08);
+            --accent: #be123c;
+            /* Rose from Index 2 */
+            --accent-glow: rgba(190, 18, 60, 0.1);
+            --void-gradient: radial-gradient(circle at 50% 50%, #f1f5f9 0%, transparent 60%);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #030001;
-            color: #d4d4d8;
-            /* Zinc-300 */
+            background: var(--bg-primary);
+            color: var(--text-primary);
             overflow-x: hidden;
-            cursor: default;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
         /* Abstract Void Background */
@@ -34,303 +51,256 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            background:
-                radial-gradient(circle at 50% 50%, #1a0505 0%, transparent 60%),
-                linear-gradient(to bottom, #000 0%, #050101 100%);
+            background: var(--void-gradient);
+            transition: background 0.5s ease;
         }
 
         .glass-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px) saturate(140%);
-            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 0 40px -10px rgba(0, 0, 0, 0.8);
-            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
-            border-color: rgba(128, 0, 32, 0.4);
-            box-shadow: 0 0 50px -10px rgba(128, 0, 32, 0.1);
-            background: rgba(20, 5, 5, 0.7);
+            border-color: var(--accent);
+            background: var(--glass-bg);
+            /* Keep base opacity */
+            box-shadow: 0 0 20px var(--accent-glow);
         }
 
         .text-gradient {
-            background: linear-gradient(180deg, #fff 0%, #71717a 100%);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .accent-gradient {
-            background: linear-gradient(135deg, #e11d48 0%, #881337 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Dynamic Utilities */
+        .text-accent {
+            color: var(--accent);
+        }
+
+        .bg-accent {
+            background-color: var(--accent);
+        }
+
+        .border-accent {
+            border-color: var(--accent);
         }
 
         /* Minimal Scrollbar */
         ::-webkit-scrollbar {
-            width: 4px;
+            width: 5px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #000;
+            background: transparent;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #331015;
-            border-radius: 0px;
+            background: var(--accent);
+            border-radius: 10px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #50101a;
+        /* Toggle Button */
+        .theme-toggle {
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 9999px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
         }
 
-        .mono {
-            font-family: monospace;
-            letter-spacing: 0.1em;
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
         }
     </style>
 </head>
 
-<body class="antialiased selection:bg-rose-900 selection:text-white">
+<body class="antialiased">
     <div class="void-bg"></div>
 
-    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl">
-        <div class="glass-card rounded-sm px-8 py-4 flex justify-between items-center bg-black/40">
-            <span class="font-bold tracking-[0.3em] text-[10px] text-rose-700">CLASS_A // 401</span>
-            <div class="hidden md:flex gap-12 text-[10px] uppercase tracking-[0.25em] font-bold text-zinc-500">
-                <a href="#analysis" class="hover:text-rose-500 transition-colors duration-300">Analysis</a>
-                <a href="#stratagem" class="hover:text-rose-500 transition-colors duration-300">Stratagem</a>
-                <a href="#records" class="hover:text-rose-500 transition-colors duration-300">Records</a>
-                <a href="#contact" class="hover:text-rose-500 transition-colors duration-300">Contact</a>
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-4xl">
+        <div class="glass-card rounded-full px-8 py-4 flex justify-between items-center">
+            <span class="font-extrabold tracking-widest text-sm">ARCH.SYS</span>
+            <div class="hidden md:flex gap-10 text-[10px] uppercase tracking-[0.2em] font-semibold text-slate-400">
+                <a href="#hero" class="hover:text-[var(--accent)] transition-colors">Core</a>
+                <a href="#logic" class="hover:text-[var(--accent)] transition-colors">Logic</a>
+                <a href="#manifest" class="hover:text-[var(--accent)] transition-colors">Manifest</a>
+                <a href="#terminal" class="hover:text-[var(--accent)] transition-colors">Terminal</a>
             </div>
-            <div class="h-1.5 w-1.5 rounded-full bg-rose-700 shadow-[0_0_10px_#e11d48]"></div>
+
+            <div class="flex items-center gap-4">
+                <div class="h-2 w-2 rounded-full bg-[var(--accent)] animate-pulse"></div>
+                <button class="theme-toggle" id="theme-btn" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="w-4 h-4"></i>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <section id="analysis" class="min-h-screen flex items-center justify-center px-6 pt-20 relative overflow-hidden">
-        <!-- Decoration Lines -->
-        <div class="absolute inset-0 pointer-events-none opacity-20">
+    <section id="hero" class="min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="text-center">
             <div
-                class="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-rose-900 to-transparent">
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent-glow)] border border-[var(--accent)]/30 text-[10px] font-bold text-[var(--accent)] tracking-tighter mb-8">
+                <i data-lucide="shield-check" class="w-3 h-3"></i> SYSTEM STATUS: OPTIMIZED
             </div>
-            <div
-                class="absolute left-1/2 top-0 w-[1px] h-full bg-gradient-to-b from-transparent via-rose-900 to-transparent">
-            </div>
-        </div>
-
-        <div class="text-center relative z-10">
-            <div
-                class="inline-flex items-center gap-3 px-4 py-1.5 rounded-none border-l-2 border-rose-800 bg-rose-950/10 text-[10px] font-bold text-rose-500 tracking-[0.2em] mb-10">
-                <span class="w-1.5 h-1.5 bg-rose-600 rounded-sm animate-pulse"></span>
-                TARGET: SUPREMACY
-            </div>
-
-            <h1 class="text-5xl md:text-8xl font-black mb-8 tracking-tighter leading-none">
-                <span class="text-gradient block">THE PERFECT</span>
-                <span class="text-zinc-800 block text-4xl md:text-7xl mt-2">HUMAN SOLUTION</span>
+            <h1 class="text-6xl md:text-8xl font-extrabold mb-8 tracking-tighter text-gradient leading-tight">
+                Architecting <br> The Inevitable.
             </h1>
-
-            <p
-                class="max-w-2xl mx-auto text-zinc-500 text-sm md:text-base leading-relaxed mb-16 font-light border-l border-zinc-800 pl-6 text-left md:text-center md:border-l-0 md:pl-0">
-                "Winning is everything. The process creates the outcome. Calculate every variable, anticipate every
-                error, and engineer the inevitable victory."
+            <p class="max-w-xl mx-auto text-slate-400 text-sm md:text-base leading-relaxed mb-12 font-light"
+                style="color: var(--text-secondary)">
+                Aku tidak sekadar membangun aplikasi. Aku membangun sistem yang efisien, dingin, dan tidak menyisakan
+                ruang untuk kegagalan. Karena di balik setiap pixel, ada logika yang harus tunduk.
             </p>
-
-            <div class="flex flex-col md:flex-row justify-center gap-6 items-center">
+            <div class="flex justify-center gap-6">
                 <button
-                    class="group relative px-12 py-4 bg-zinc-900 border border-zinc-800 text-xs font-bold uppercase tracking-[0.3em] overflow-hidden transition-all hover:border-rose-900/50">
-                    <div
-                        class="absolute inset-0 active-state bg-rose-900/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                    </div>
-                    <span class="relative group-hover:text-rose-500 transition-colors">Observe Data</span>
+                    class="px-10 py-4 glass-card rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-[var(--accent)] hover:text-white transition-all">
+                    Initialize
                 </button>
             </div>
         </div>
     </section>
 
-    <section id="stratagem" class="py-32 px-6 max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Strategic Thinking -->
-            <div class="glass-card p-10 relative group">
-                <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-50 transition-opacity">
-                    <span class="text-4xl font-black text-rose-950">01</span>
-                </div>
-                <div
-                    class="h-10 w-10 bg-rose-900/20 border border-rose-900/30 flex items-center justify-center mb-8 rounded-sm">
-                    <i data-lucide="brain-circuit" class="text-rose-500 w-5 h-5"></i>
-                </div>
-                <h3 class="text-lg font-bold mb-4 tracking-tight">Algorithmic Logic</h3>
-                <p class="text-xs text-zinc-500 leading-relaxed text-justify">
-                    Membangun sistem layaknya permainan catur. Setiap baris kode adalah langkah strategis untuk
-                    meminimalisir redundansi dan memaksimalkan efisiensi eksekusi.
-                </p>
-                <div class="mt-8 pt-6 border-t border-white/5 flex gap-4 text-[10px] text-zinc-600 font-mono">
-                    <span>NEXT.JS</span> <span>GO</span> <span>PYTHON</span>
-                </div>
+    <section id="logic" class="py-32 px-6 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-1">
+            <div class="glass-card p-10 border-r-0 md:rounded-l-2xl">
+                <i data-lucide="cpu" class="text-[var(--accent)] mb-6"></i>
+                <h3 class="text-lg font-bold mb-4">Neural Infrastructure</h3>
+                <p class="text-xs text-slate-500 leading-relaxed" style="color: var(--text-secondary)">Pengembangan
+                    backend dengan fokus pada konkurensi
+                    tinggi dan latensi rendah. Node.js & Go.</p>
             </div>
-
-            <!-- Adaptation -->
-            <div class="glass-card p-10 relative group">
-                <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-50 transition-opacity">
-                    <span class="text-4xl font-black text-rose-950">02</span>
-                </div>
-                <div
-                    class="h-10 w-10 bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-8 rounded-sm">
-                    <i data-lucide="scan-eye" class="text-zinc-400 w-5 h-5"></i>
-                </div>
-                <h3 class="text-lg font-bold mb-4 tracking-tight">Adaptive Interface</h3>
-                <p class="text-xs text-zinc-500 leading-relaxed text-justify">
-                    Manipulasi persepsi user melalui UI/UX yang presisi. Desain bukan hanya estetika, tapi alat kontrol
-                    alur informasi yang efektif.
-                </p>
-                <div class="mt-8 pt-6 border-t border-white/5 flex gap-4 text-[10px] text-zinc-600 font-mono">
-                    <span>REACT</span> <span>TAILWIND</span> <span>FRAMER</span>
-                </div>
+            <div class="glass-card p-10 border-x-0">
+                <i data-lucide="layers" class="text-[var(--accent)] mb-6"></i>
+                <h3 class="text-lg font-bold mb-4">Interface Logic</h3>
+                <p class="text-xs text-slate-500 leading-relaxed" style="color: var(--text-secondary)">UI/UX bukan soal
+                    estetika, tapi soal efisiensi
+                    kognitif manusia. React & Tailwind.</p>
             </div>
+            <div class="glass-card p-10 border-l-0 md:rounded-r-2xl">
+                <i data-lucide="database" class="text-[var(--accent)] mb-6"></i>
+                <h3 class="text-lg font-bold mb-4">Data Persistence</h3>
+                <p class="text-xs text-slate-500 leading-relaxed" style="color: var(--text-secondary)">Arsitektur
+                    database yang didesain untuk integritas
+                    absolut tanpa redundansi.</p>
+            </div>
+        </div>
+    </section>
 
-            <!-- Absolute Control -->
-            <div class="glass-card p-10 relative group">
-                <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-50 transition-opacity">
-                    <span class="text-4xl font-black text-rose-950">03</span>
-                </div>
-                <div
-                    class="h-10 w-10 bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-8 rounded-sm">
-                    <i data-lucide="server" class="text-zinc-400 w-5 h-5"></i>
-                </div>
-                <h3 class="text-lg font-bold mb-4 tracking-tight">Infrastructure Control</h3>
-                <p class="text-xs text-zinc-500 leading-relaxed text-justify">
-                    Deployment skalabel dan terisolasi. Backend yang tenang namun absolut dalam menangani beban data
-                    masif.
-                </p>
-                <div class="mt-8 pt-6 border-t border-white/5 flex gap-4 text-[10px] text-zinc-600 font-mono">
-                    <span>DOCKER</span> <span>AWS</span> <span>POSTGRES</span>
+    <section id="manifest" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="mb-20 space-y-4">
+            <h2 class="text-4xl font-bold tracking-tighter">Manifesto Kerja</h2>
+            <div class="h-1 w-20 bg-[var(--accent)]"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="group cursor-none">
+                <div class="glass-card rounded-3xl overflow-hidden">
+                    <div class="aspect-video bg-slate-900 relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-[var(--accent)]/20 group-hover:bg-transparent transition-all duration-700">
+                        </div>
+                        <!-- Placeholder Image -->
+                        <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000"
+                            class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" />
+                    </div>
+                    <div class="p-8">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold">Project Zero: Omniscience</h3>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-500"></i>
+                        </div>
+                        <p class="text-sm text-slate-500 mb-6" style="color: var(--text-secondary)">Sistem monitoring
+                            real-time berbasis AI yang memprediksi
+                            kegagalan server sebelum terjadi.</p>
+                        <div class="flex gap-4 text-[10px] font-mono text-[var(--accent)]">
+                            <span>TYPESCRIPT</span> <span>RUST</span> <span>WASM</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="records" class="py-32 px-6 max-w-7xl mx-auto border-t border-zinc-900">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-            <div>
-                <span class="text-rose-700 font-mono text-xs tracking-widest block mb-2">FILE_ACCESS: GRANTED</span>
-                <h2 class="text-4xl md:text-5xl font-bold tracking-tighter">Mission Records</h2>
+    <section id="terminal" class="py-32 px-6 max-w-3xl mx-auto">
+        <div class="glass-card p-12 rounded-3xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10">
+                <i data-lucide="command" class="w-20 h-20"></i>
             </div>
-            <div class="flex gap-2">
+            <h2 class="text-2xl font-bold mb-8">Establish Connection</h2>
+            <form class="space-y-8">
+                <div class="relative">
+                    <input type="text"
+                        class="w-full bg-transparent border-b border-[var(--text-secondary)]/20 py-2 focus:outline-none focus:border-[var(--accent)] transition-colors peer"
+                        placeholder=" ">
+                    <label
+                        class="absolute left-0 top-2 text-xs text-slate-500 transition-all peer-focus:-top-4 peer-focus:text-[var(--accent)]">IDENTIFIER</label>
+                </div>
+                <div class="relative">
+                    <input type="email"
+                        class="w-full bg-transparent border-b border-[var(--text-secondary)]/20 py-2 focus:outline-none focus:border-[var(--accent)] transition-colors peer"
+                        placeholder=" ">
+                    <label
+                        class="absolute left-0 top-2 text-xs text-slate-500 transition-all peer-focus:-top-4 peer-focus:text-[var(--accent)]">SECURE_EMAIL</label>
+                </div>
+                <div class="relative">
+                    <textarea
+                        class="w-full bg-transparent border-b border-[var(--text-secondary)]/20 py-2 focus:outline-none focus:border-[var(--accent)] transition-colors peer"
+                        rows="3" placeholder=" "></textarea>
+                    <label
+                        class="absolute left-0 top-2 text-xs text-slate-500 transition-all peer-focus:-top-4 peer-focus:text-[var(--accent)]">MESSAGE_PAYLOAD</label>
+                </div>
                 <button
-                    class="w-10 h-10 border border-zinc-800 hover:bg-zinc-900 flex items-center justify-center disabled:opacity-50">
-                    <i data-lucide="chevron-left" class="w-4 h-4 text-zinc-500"></i>
+                    class="w-full py-4 bg-[var(--text-primary)] text-[var(--bg-primary)] text-xs font-bold uppercase tracking-[0.3em] hover:bg-[var(--accent)] hover:text-white transition-all">
+                    Transmit Data
                 </button>
-                <button class="w-10 h-10 border border-zinc-800 hover:bg-zinc-900 flex items-center justify-center">
-                    <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="space-y-1">
-            <!-- Project 1 -->
-            <div class="group relative border-b border-zinc-900 hover:bg-zinc-900/30 transition-colors">
-                <a href="#"
-                    class="block p-8 md:p-12 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
-                    <div>
-                        <h3 class="text-2xl font-bold mb-2 group-hover:text-rose-500 transition-colors">Shadow Banking
-                            System</h3>
-                        <p class="text-zinc-600 text-sm max-w-md">Platform fintech terdesentralisasi dengan enkripsi
-                            militer. Transaksi tanpa jejak.</p>
-                    </div>
-                    <div class="flex items-center gap-8 md:gap-16">
-                        <div class="text-right hidden md:block">
-                            <span class="block text-[10px] text-zinc-700 uppercase tracking-wider mb-1">Status</span>
-                            <span class="text-xs font-mono text-rose-500">CLASSIFIED</span>
-                        </div>
-                        <i data-lucide="arrow-up-right"
-                            class="w-6 h-6 text-zinc-700 group-hover:text-rose-500 group-hover:rotate-45 transition-all"></i>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Project 2 -->
-            <div class="group relative border-b border-zinc-900 hover:bg-zinc-900/30 transition-colors">
-                <a href="#"
-                    class="block p-8 md:p-12 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
-                    <div>
-                        <h3 class="text-2xl font-bold mb-2 group-hover:text-rose-500 transition-colors">Academic Tracker
-                        </h3>
-                        <p class="text-zinc-600 text-sm max-w-md">Sistem manajemen performa siswa dengan prediksi AI
-                            untuk evaluasi bakat laten.</p>
-                    </div>
-                    <div class="flex items-center gap-8 md:gap-16">
-                        <div class="text-right hidden md:block">
-                            <span class="block text-[10px] text-zinc-700 uppercase tracking-wider mb-1">Status</span>
-                            <span class="text-xs font-mono text-emerald-500/70">OPERATIONAL</span>
-                        </div>
-                        <i data-lucide="arrow-up-right"
-                            class="w-6 h-6 text-zinc-700 group-hover:text-rose-500 group-hover:rotate-45 transition-all"></i>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Project 3 -->
-            <div class="group relative border-b border-zinc-900 hover:bg-zinc-900/30 transition-colors">
-                <a href="#"
-                    class="block p-8 md:p-12 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
-                    <div>
-                        <h3 class="text-2xl font-bold mb-2 group-hover:text-rose-500 transition-colors">Secure
-                            Communication</h3>
-                        <p class="text-zinc-600 text-sm max-w-md">Aplikasi chat end-to-end dengan fitur self-destruct
-                            dan multi-layer authentication.</p>
-                    </div>
-                    <div class="flex items-center gap-8 md:gap-16">
-                        <div class="text-right hidden md:block">
-                            <span class="block text-[10px] text-zinc-700 uppercase tracking-wider mb-1">Year</span>
-                            <span class="text-xs font-mono text-zinc-500">2025</span>
-                        </div>
-                        <i data-lucide="arrow-up-right"
-                            class="w-6 h-6 text-zinc-700 group-hover:text-rose-500 group-hover:rotate-45 transition-all"></i>
-                    </div>
-                </a>
-            </div>
+            </form>
         </div>
     </section>
 
-    <section id="contact" class="py-32 px-6">
-        <div class="max-w-2xl mx-auto text-center">
-            <div class="inline-block p-1 rounded-full border border-rose-900/30 mb-8">
-                <div class="w-3 h-3 bg-rose-700 rounded-full animate-pulse shadow-[0_0_15px_#be123c]"></div>
-            </div>
-            <h2 class="text-3xl font-bold mb-8 tracking-tight">Initiate Contact Protocol</h2>
-            <p class="text-zinc-600 mb-12 text-sm leading-relaxed">
-                Jika kamu memiliki proposisi yang menguntungkan atau tantangan yang layak, saya akan mempertimbangkan
-                untuk merespons. Jangan buang waktu.
-            </p>
-            <a href="mailto:email@example.com"
-                class="inline-flex items-center gap-3 px-8 py-4 bg-zinc-100 text-black rounded-sm font-bold tracking-widest hover:bg-rose-600 hover:text-white transition-all duration-300 text-xs">
-                SEND TRANSMISSION
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </a>
-        </div>
-    </section>
-
-    <footer class="py-12 border-t border-zinc-900/50 text-center">
-        <p class="text-[10px] text-zinc-800 uppercase tracking-[0.5em]">
-            Subject 401 &copy; 2026
-        </p>
+    <footer class="py-20 text-center opacity-30 text-[10px] tracking-[0.5em] font-light">
+        END OF TRANSMISSION // 2026
     </footer>
 
     <script>
         lucide.createIcons();
 
-        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+        // Theme Toggle Logic
+        const themeBtn = document.getElementById('theme-btn');
+        const icon = themeBtn.querySelector('i');
+
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+
+            // Update Icon
+            if (document.body.classList.contains('light-mode')) {
+                icon.setAttribute('data-lucide', 'moon');
+            } else {
+                icon.setAttribute('data-lucide', 'sun');
+            }
+            lucide.createIcons();
+        });
+
+        // Reveal effect on scroll
+        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('opacity-100', 'translate-y-0');
-                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
                 }
             });
         }, observerOptions);
 
-        document.querySelectorAll('section > div, .glass-card').forEach(el => {
-            el.classList.add('transition-all', 'duration-1000', 'ease-out', 'opacity-0', 'translate-y-10');
+        document.querySelectorAll('.glass-card').forEach(el => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(20px)";
+            el.style.transition = "all 0.8s ease-out";
             observer.observe(el);
         });
     </script>
